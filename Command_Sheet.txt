@@ -1,0 +1,78 @@
+t1:
+source /opt/ros/jazzy/setup.bash
+ros2 launch turtlebot4_navigation localization.launch.py map:=/home/ubuntu/Mohamedwalid/my_map.yaml
+
+t2:
+source /opt/ros/jazzy/setup.bash
+ros2 launch turtlebot4_navigation nav2.launch.py
+
+t3: 
+source /opt/ros/jazzy/setup.bash
+ros2 launch turtlebot4_viz view_navigation.launch.py
+
+t4(ssh):
+ssh ubuntu@192.168.1.108
+source /opt/ros/jazzy/setup.bash
+ros2 launch turtlebot4_bringup oakd.launch.py
+
+t5(ssh):
+ssh ubuntu@192.168.1.108
+source /opt/ros/jazzy/setup.bash
+ros2 topic hz /oakd/rgb/preview/image_raw/compressed
+
+t6:
+source ~/yolo_ws/yolo_env/bin/activate
+source /opt/ros/jazzy/setup.bash
+cd ~/yolo_ws/scripts
+python color_detector.py
+
+
+t7:
+source ~/yolo_ws/yolo_env/bin/activate
+source /opt/ros/jazzy/setup.bash
+cd ~/yolo_ws/scripts
+python search_node.py
+
+
+settings:
+fixed frame = map
+add
+map,tf,lasercscan,robotmodel
+lasercscan topic:
+/scan
+map topic:
+/map
+map durability: transient local
+robot model:
+description topic:
+/robot_description
+when using rviz use nav2 goal instead of 2d goal pose
+ros2 launch turtlebot4_viz view_navigation.launch.py
+
+t3:ros2 launch turtlebot4_viz view_navigation.launch.py
+t4:ros2 topic echo /clicked_point
+
+turtlebot4
+
+Global state:
+No tf data.  Actual error: Frame [map] does not exist
+
+
+Camera Commands:
+
+ssh terminal:
+
+source /opt/ros/jazzy/setup.bash
+pkill -f oakd
+pkill -f component_container
+ros2 launch turtlebot4_bringup oakd.launch.py
+
+another ssh terminal:
+source /opt/ros/jazzy/setup.bash
+ros2 topic hz /oakd/rgb/preview/image_raw
+
+
+
+
+in Rviz:
+- Image Topic: /oakd/rgb/preview/image_raw/compressed 
